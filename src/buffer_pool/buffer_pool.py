@@ -41,6 +41,5 @@ class BufferPool:
         logger.info("Initializing buffer pool...")
         storage_engine = StorageEngine()
         self.HEADER_STRING = storage_engine.get_header_string()
-        self.PAGE_SIZE = storage_engine.get_page_size()
+        # self.PAGE_SIZE = storage_engine.get_page_size()
         logger.info("Header string: %s", self.HEADER_STRING)
-        logger.info("Page size: %s bytes", self.PAGE_SIZE)

@@ -1,0 +1,2 @@
+def lexer(query):
+    pass
