@@ -4,7 +4,7 @@ import logging
 import os
 from logging.handlers import RotatingFileHandler
 
-LOG_DIR = "logs"
+LOG_DIR = "../logs"
 LOG_FILE = "app.log"
 
 def get_logger(name: str = "app_logger") -> logging.Logger:
@@ -23,7 +23,8 @@ def get_logger(name: str = "app_logger") -> logging.Logger:
 
     formatter = logging.Formatter(
         fmt="%(asctime)s | %(levelname)s | %(message)s",
-        datefmt="%Y-%m-%d %H:%M:%S"
+        datefmt="%Y-%m-%d %H:%M:%S",
+        
     )
 
     # Console handler
@@ -34,7 +35,8 @@ def get_logger(name: str = "app_logger") -> logging.Logger:
     file_handler = RotatingFileHandler(
         log_path,
         maxBytes=5 * 1024 * 1024,
-        backupCount=5
+        backupCount=5,
+        encoding="utf-8"
     )
     file_handler.setFormatter(formatter)
 
