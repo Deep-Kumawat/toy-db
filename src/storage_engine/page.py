@@ -14,11 +14,13 @@ Page's APIs
 """
 
 
+import struct
 from config.file_config import (
     ROOT_PAGE_HEADER_SIZE,
     DATABASE_HEADER_STRUCTURE,
     BTREE_PAGE_HEADER_SIZE,
     PAGE_SIZE,
+    TEXT_ENCODING_MAP,
 )
 from exceptions.page import NotRootPageError
 from storage_engine.disk_manager import DiskManager
@@ -39,20 +41,18 @@ class Page:
 
     def __init__(self, page_number):
         self.PAGE_NUMBER = page_number
-        if not self.disk_manager.is_db_file_exists():
-            pass
-        if self._check_if_page_exists():
+        if self.disk_manager.is_db_file_exists() and self._page_exists():
             return
         self._allocate_page()
 
     def _allocate_page(self):
         self.disk_manager.allocate_bytes(PAGE_SIZE)
 
-    def _check_if_page_exists(self):
+    def _page_exists(self):
         database_file_size = self.disk_manager.get_database_file_size()
         expected_page_size_if_page_exists = self.PAGE_NUMBER * PAGE_SIZE
         return (
-            True if expected_page_size_if_page_exists == database_file_size else False
+            True if expected_page_size_if_page_exists <= database_file_size else False
         )
 
     def is_root(self):
@@ -77,25 +77,31 @@ class Page:
         header_string_offset = DATABASE_HEADER_STRUCTURE["HEADER_STRING"]["OFFSET"]
         page_size_offset = DATABASE_HEADER_STRUCTURE["PAGE_SIZE"]["OFFSET"]
         text_encoding_offset = DATABASE_HEADER_STRUCTURE["TEXT_ENCODING"]["OFFSET"]
-        if len(bytes(header_string)) > header_string_length_limit:
+
+        text_encoding_val = TEXT_ENCODING_MAP["UTF-8"]
+        if (
+            len(bytes(header_string, encoding=text_encoding))
+            > header_string_length_limit
+        ):
             raise ValueError(
                 f"Header string provided exceeded the allowed length of {header_string_length_limit}"
             )
-        if len(bytes(page_size)) > page_size_length_limit:
+        if page_size > 2 ** (page_size_length_limit * 8):
             raise ValueError(
-                f"Header string provided exceeded the allowed length of {page_size_length_limit}"
+                f"Page size provided exceeded the allowed length of {page_size_length_limit}"
             )
-        if len(bytes(text_encoding)) > text_encoding_length_limit:
+        if text_encoding_val > text_encoding_length_limit * 8:
             raise ValueError(
-                f"Header string provided exceeded the allowed length of {text_encoding_length_limit}"
+                f"Text encoding provided exceeded the allowed length of {text_encoding_length_limit}"
             )
 
         self.disk_manager.write_bytes(
-            data=bytes(header_string), offset=header_string_offset
+            data=bytes(header_string, encoding=text_encoding),
+            offset=header_string_offset,
         )
-        self.disk_manager.write_bytes(data=bytes(page_size), offset=page_size_offset)
+        self.disk_manager.write_bytes(data=page_size, offset=page_size_offset)
         self.disk_manager.write_bytes(
-            data=bytes(text_encoding), offset=text_encoding_offset
+            data=text_encoding_val, offset=text_encoding_offset
         )
 
 

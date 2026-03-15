@@ -1,7 +1,9 @@
 import os
 import struct
+from config.file_config import PAGE_SIZE
 from query_processor.utils import get_table_name
 from storage_engine.page import Page
+from storage_engine.schema import Schema
 from storage_engine.tuple import Tuple
 from utils.logger import get_logger
 
@@ -45,11 +47,13 @@ class StorageEngine:
 
         logger.info("Database file not found. Creating a new file.")
 
-        # Write page header
+        # Initialize file
         root_page = Page(0)
-        root_page.write_database_header()
+        root_page.write_database_header(
+            header_string="Toy DB", page_size=PAGE_SIZE, text_encoding="UTF-8"
+        )
 
-    def create_table(self, table_name, schema):
+    def create_table(self, table_name: str, schema: Schema):
         pass
 
 

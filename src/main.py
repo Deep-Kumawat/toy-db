@@ -14,8 +14,8 @@ if __name__ == "__main__":
     buffer_pool = BufferPool()
     # Create Table
     storage_engine = StorageEngine()
-    logger.info("Creating a new table...")
-    # storage_engine.create_table("CREATE TABLE TBLNUMBERS (ID INT, NUMBER INT)")
-    storage_engine.create_table("TBLWIZARDS", None)
-    logger.info("Created a new table")
+    # logger.info("Creating a new table...")
+    # # storage_engine.create_table("CREATE TABLE TBLNUMBERS (ID INT, NUMBER INT)")
+    # storage_engine.create_table("TBLWIZARDS", None)
+    # logger.info("Created a new table")
     # logger.info("Insert a row into a table")
