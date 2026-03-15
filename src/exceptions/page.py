@@ -1,0 +1,2 @@
+class NotRootPageError(Exception):
+    pass

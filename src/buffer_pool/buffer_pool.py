@@ -3,6 +3,7 @@ from utils.logger import get_logger
 
 logger = get_logger()
 
+
 class BufferPool:
     HEADER_STRING = None
     PAGE_SIZE = None
