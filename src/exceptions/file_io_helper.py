@@ -1,0 +1,2 @@
+class FailedToReadBytes(Exception):
+    pass

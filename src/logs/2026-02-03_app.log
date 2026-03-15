@@ -1,0 +1,9 @@
+2026-02-03 23:01:23 | INFO | Running main.py
+2026-02-03 23:01:23 | INFO | Initializing buffer pool...
+2026-02-03 23:01:23 | INFO | Found database file at: toydb.db
+2026-02-03 23:01:23 | INFO | Header string: b'Toy DB\x00\x00'
+2026-02-03 23:01:23 | INFO | Page size: 4096 bytes
+2026-02-03 23:01:23 | INFO | Found database file at: toydb.db
+2026-02-03 23:01:23 | INFO | Creating a new table...
+2026-02-03 23:01:23 | INFO | Created a new table
+2026-02-03 23:01:23 | INFO | Insert a row into a table
