@@ -28,3 +28,6 @@ class DiskManager:
 
     def get_database_file_size(self):
         return os.path.getsize(DATABASE_FILE_PATH)
+
+    def is_db_file_exists(self):
+        return os.path.exists(DATABASE_FILE_PATH)

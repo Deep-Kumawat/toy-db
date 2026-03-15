@@ -39,6 +39,8 @@ class Page:
 
     def __init__(self, page_number):
         self.PAGE_NUMBER = page_number
+        if not self.disk_manager.is_db_file_exists():
+            pass
         if self._check_if_page_exists():
             return
         self._allocate_page()
