@@ -11,11 +11,13 @@ if __name__ == "__main__":
     ## Start of program. Load properties from header
     #################################################
     logger.info("Running main.py")
-    buffer_pool = BufferPool()
+    # buffer_pool = BufferPool()
     # Create Table
     storage_engine = StorageEngine()
-    # logger.info("Creating a new table...")
-    # # storage_engine.create_table("CREATE TABLE TBLNUMBERS (ID INT, NUMBER INT)")
+    logger.info("Creating a new table...")
+    storage_engine.create_table(
+        table_name="TBLPLAYERS", schema="CREATE TABLE TBLPLAYERS (ID INT, NAME STRING)"
+    )
     # storage_engine.create_table("TBLWIZARDS", None)
     # logger.info("Created a new table")
     # logger.info("Insert a row into a table")
