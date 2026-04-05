@@ -1,12 +1,12 @@
 import os
 from config.file_config import PAGE_SIZE, SCHEMA_TABLE_ROOT_PAGE_NUMBER
 from storage_engine.btree.btree import BTree
-from storage_engine.page import Page
-from storage_engine.schema import Schema
+from storage_engine.column import Column
+from storage_engine.page import Page 
 from utils.logger import get_logger
 
 
-logger = get_logger()
+logger = get_logger(name=__name__)
 
 """
 -----------
@@ -54,12 +54,13 @@ class StorageEngine:
         )
         self.root_page.write_page_header(page_type=0)
 
-    def create_table(self, table_name: str, schema: Schema):
+    def create_table(self, table_name: str, columns: list[Column]) -> None:
         """
         1. Add table record to the schema_table.
         2. Allocate a new page for the table.
         """
         # 1. Get the schema table
+        logger.info("Fetching the BTree for schema table...")
         schema_catelog_btree = BTree(page_number=SCHEMA_TABLE_ROOT_PAGE_NUMBER)
 
         # 2. Create a new record in the schema table

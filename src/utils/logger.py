@@ -8,7 +8,7 @@ LOG_DIR = "logs"
 LOG_FILE = "app.log"
 
 
-def get_logger(name: str = "app_logger") -> logging.Logger:
+def  get_logger(*, name: str = "app_logger") -> logging.Logger:
     # Create log directory if it doesn't exist
     os.makedirs(LOG_DIR, exist_ok=True)
 
@@ -23,7 +23,7 @@ def get_logger(name: str = "app_logger") -> logging.Logger:
     log_path = os.path.join(LOG_DIR, f"{curr_date}_{LOG_FILE}")
 
     formatter = logging.Formatter(
-        fmt="%(asctime)s | %(levelname)s | %(message)s", datefmt="%Y-%m-%d %H:%M:%S"
+        fmt="[%(asctime)s] [%(levelname)s] [%(name)s] [%(message)s]", datefmt="%Y-%m-%d %H:%M:%S"
     )
 
     # Console handler

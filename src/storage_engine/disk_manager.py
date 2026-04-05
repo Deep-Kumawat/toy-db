@@ -53,6 +53,8 @@ class DiskManager:
         Ex: Current page total page count = 5 then
         returns 6.
         """
+        if not self.is_db_file_exists():
+            return 0 # DB file does not exist so new page number would be 0
         if self.get_database_file_size() % PAGE_SIZE != 0:
             raise FailedToAllocateBytes(
                 f"Failed to allocate bytes for new page as the current database file size is not a multiple of PAGE_SIZE. Current database file size: {self.get_database_file_size()}"

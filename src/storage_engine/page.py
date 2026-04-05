@@ -18,12 +18,16 @@ from config.file_config import (
     DATABASE_HEADER_STRUCTURE,
     BTREE_PAGE_HEADER_SIZE,
     PAGE_SIZE,
+    PAGE_TYPE,
     TEXT_ENCODING_MAP,
     PageConstants,
     PageHeader,
 )
 from exceptions.page import NotRootPageError
 from storage_engine.disk_manager import DiskManager
+from utils.logger import get_logger
+
+logger = get_logger(name=__name__)
 
 
 class Page:
@@ -33,18 +37,27 @@ class Page:
     def __init__(self, page_number: int | None = None):
         self.page_number = page_number
         if self.page_number is None:
+            logger.info("Provided page_number to Page() was None")
             # Allocate a new page
             self.page_number = self.disk_manager.get_new_page_number()
-            self.disk_manager.allocate_bytes(PAGE_SIZE)
-            return self.page_number
+            logger.info("Provisioning a new page")
+            return self._allocate_page()
         if self.disk_manager.is_db_file_exists() and self._page_exists():
             return
-        self._allocate_page()
+        raise Exception("Something unexpected happened in page's constructor")
 
     def get_page_type(self) -> bytes:
         """Returns the page type"""
         # Read bytes from [0:2]
         return self.disk_manager.read_bytes(2, 100)
+
+    def display_page_type(self) -> None:
+        """Returns the page type"""
+        # Read bytes from [0:2]
+        bytes = self.get_page_type()
+        page_type_int = int.from_bytes(bytes)
+        page_type = PAGE_TYPE[page_type_int]
+        logger.info("Page Type: %s", page_type)
 
     def _allocate_page(self) -> int:
         page_number = self.disk_manager.get_new_page_number()
